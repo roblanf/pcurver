@@ -6,8 +6,8 @@
 library(MADAM)
 
 pcurve.fisher.test <- function(p) {
-	p <- p_check(p)
-	pp <- p_to_pp(p)
+	p <- p.check(p)
+	pp <- p.to.pp(p)
 	r <- fisher.method(matrix(pp, nrow=1))
 	return(r)
 }
