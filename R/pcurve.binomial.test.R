@@ -4,9 +4,12 @@
 # This function computes two one-tailed sign tests asking whether there's
 # a tendency for the p values to be >0.025 or <0.025
 
-pcurve.binomial.test <- function(p) {
+pcurve.binomial.test <- function(p, limits = c(0.0, 0.05)) {
 
-	p <- p.check(p)
+	p <- p.check(p, limits)
+	limits.check(limits)
+	midpoint <- sum(limits)/2.0
+
 
 	higher <- sum(p>0.025)
 	lower <- sum(p<0.025)
