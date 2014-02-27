@@ -1,6 +1,4 @@
 
-# these test check the 
-
 test_that("p_check raises errors for anything that's not a float >=0 and <=0.05", {
 
 	expect_that(p_check(c(0.0)), equals(c(0.0)))
