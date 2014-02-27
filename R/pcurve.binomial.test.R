@@ -4,7 +4,7 @@
 # This function computes two one-tailed sign tests asking whether there's
 # a tendency for the p values to be >0.025 or <0.025
 
-binomial.p.test <- function(p) {
+pcurve.binomial.test <- function(p) {
 
 	p <- p.check(p)
 
