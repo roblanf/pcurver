@@ -10,15 +10,15 @@ pcurve.binomial.test <- function(p, limits = c(0.0, 0.05)) {
 	limits.check(limits)
 	midpoint <- sum(limits)/2.0
 
-
-	higher <- sum(p>0.025)
-	lower <- sum(p<0.025)
+	higher <- sum(p>midpoint)
+	lower <- sum(p<midpoint)
 
 	r.skew <- binom.test(c(higher,lower), alternative = "less")
 	l.skew <- binom.test(c(higher,lower), alternative = "greater")
 	
-	return(list("Number of p values >0.025"=higher,
-				"Number of p values <0.025"=lower,
+	return(list("Number of p values >midpoint"=higher,
+				"Number of p values <midpoint"=lower,
 				"p value for right skew"=r.skew$p.value, 
-				"p value for left skew"=l.skew$p.value))
+				"p value for left skew"=l.skew$p.value,
+				"midpoint"=midpoint))
 }
