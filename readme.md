@@ -40,11 +40,6 @@ pcurve.binomial.test(p)
 
 # answer: Yes. Very right skewed. This uses a midpoint of 0.025, tests for left/right balance in the plot
 
-# 2. Is there evidence of p-hacking or publication bias
-pcurve.binomial.test(p, limits = c(0.03, 0.05))
-
-# Answer: Yes. Very left skewed at the top end of the distribution - i.e. the 0.04-0.05 column is significantly bigger than the 0.03-0.04 colum.
-
 # 3. We can do Fisher's test to test for skew as well.
 pcurve.fisher.test(p)
 
