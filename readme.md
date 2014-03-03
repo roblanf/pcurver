@@ -1,4 +1,4 @@
-# PCurveR
+# pcurver
 
 These are, or as it may, will be, functions to analyse and plot distributions of p values in R.
 
