@@ -1,5 +1,6 @@
 library('testthat')
 library('MADAM')
+library('ggplot2')
 
 source('p.check.R')
 source('limits.check.R')
