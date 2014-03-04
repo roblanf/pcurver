@@ -5,7 +5,7 @@ library('ggplot2')
 source('p.check.R')
 source('limits.check.R')
 source('p.to.pp.R')
-source('pcurve.binomial.test.R')
+source('pcurve.binomial.tests.R')
 source('pcurve.fisher.test.R')
 source('pcurve.plot.R')
 
