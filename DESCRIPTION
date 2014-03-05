@@ -1,0 +1,9 @@
+Package: pcurver
+Title: Tools to analyse distributions of P-values from the published literature
+Description: 
+Version: 0.1
+Author: Rob Lanfear <rob.lanfear@gmail.com>
+Maintainer: Rob Lanfear <rob.lanfear@gmail.com>
+Depends: R (>= 3.0.2)
+License: MIT
+Imports: ggplot2
