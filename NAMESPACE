@@ -1,0 +1,4 @@
+export(binomial.all.test)
+export(binomial.bias.test)
+export(binomial.sns.test)
+export(fisher.rskew.test)

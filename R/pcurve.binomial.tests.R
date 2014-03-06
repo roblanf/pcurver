@@ -1,5 +1,26 @@
 
-# A collection of binomial functions to check p curves
+#' Perform a two-tailed sign test on p values between 0.00 and 0.05.
+#'
+#' This function tests the null hypothesis that there are an equal
+#' number of p values in two bins: 0.0<=p<0.025, and 0.025<p<=0.05.
+#' Note that p values of exactly 0.025 are excluded, because they 
+#' do not fall in either bin. The test uses a two-tailed sign test.
+#' A significant result indicates that you can reject the null 
+#' hypothesis of an equal number of p values in each bin.
+#' Significantly more p values in the smaller bin is expected for collections
+#' of p values that contain evidential value. Significantly More p values in 
+#' the larger bin is consistent with intensive p hacking or publication
+#' bias.
+#' @param p a vector of p values between 0.0 and 0.05 (inclusive)
+#' @return a list giving the number of p values in each bin, and the 
+#'   p value of the two-tailed sign test.
+#' @keywords binomial, p curve
+#' @export
+#' @seealso \code{\link{binomial.bias.test}}, \code{\link{binomial.sns.test}}
+#' @examples
+#' 
+#' p <- c(0.00001, 0.024, 0.002, 0.045, 0.00003, 0.021, 0.0001, 0.0000948, 0.0000002)
+#' binomial.all.test(p)
 
 binomial.all.test <- function(p) {
 	# a two tailed binomial test on the whole dataset
@@ -16,6 +37,43 @@ binomial.all.test <- function(p) {
 				"Number of p values <0.025"=lower,
 				"p value"=r$p.value))
 }
+
+#' Perform a one-tailed sign test on p values between 0.03 and 0.05.
+#'
+#' This function tests the null hypothesis that there are at least as
+#' many p values in the 0.03 - 0.04 bin as in the 0.04 - 0.05 bin.
+#' Note that p values of exactly 0.04 are excluded, because they 
+#' do not fall in either bin. The test uses a one-tailed sign test.
+#' Significantly more p values in the smaller bin is consistent with
+#' collections of p values with evidential value. Significantly more p  
+#' values in the larger bin is consistent with p-hacking or publication 
+#' bias. This is a more sensitive test of p-hacking or publication bias
+#' than the related \code{\link{binomial.all.test}}
+#' @param p a vector of p values between 0.0 and 0.05 (inclusive)
+#' @return a list giving the number of p values in each bin, and the 
+#'   p value of the two-tailed sign test.
+#' @keywords binomial, p curve
+#' @export
+#' @seealso \code{\link{binomial.all.test}}, \code{\link{binomial.sns.test}}
+#' @examples
+#' 
+#' # here are some p values you might get from a strong effect size
+#' p <- rexp(1000, 200)
+#' p <- p[p<0.05]
+#' 
+#' # let's add some you might get from p-hacking and/or publication bias
+#' h <- -1 * rexp(100, 200) + 0.05
+#' h <- h[h>0.00]
+#' 
+#' p <- c(p, h)
+#' 
+#' # the binomial.all.test should show significant right skew
+#' # that's expected - it uses all the data from 0.00 to 0.05
+#' binomial.all.test(p)
+#' 
+#' # the binomial.bias.test is more sensitive to p-hacking and/or
+#' # publication bias - it uses just the data from 0.03 to 0.05
+#' binomial.bias.test(p)
 
 
 binomial.bias.test <- function(p) {
@@ -38,6 +96,30 @@ binomial.bias.test <- function(p) {
 				"One-tailed p value for evidence of publication bias and/or p-hacking"=r$p.value))
 }
 
+#' Perform two one-tailed sign tests on p values between 0.00 and 0.05.
+#'
+#' This function replicates the analysis described in Simonsohn et al 
+#' (2013, see references), and is named for the three authors of that  
+#' paper. If you use it, please cite that paper (see references). 
+#' It performs two symmetrical one-tailed sign 
+#' tests. We do not recommend its use, because doing two one-tailed tests
+#' will double your false-positive rate compared to doing a single two-
+#' tailed test. So rather than use this test, you should use 
+#' \code{\link{binomial.all.test}}.
+#' @references Simonsohn, Uri and Nelson, Leif D. and Simmons, Joseph 
+#' P., P-Curve: A Key to the File Drawer (April 24, 2013). Journal of 
+#' Experimental Psychology: General, Forthcoming. 
+#' Available at SSRN: http://ssrn.com/abstract=2256237
+#' @param p a vector of p values between 0.0 and 0.05 (inclusive)
+#' @return a list giving the number of p values in each bin, and the 
+#'   p values of the two one-tailed sign tests.
+#' @keywords binomial, p curve
+#' @export
+#' @seealso \code{\link{binomial.bias.test}}, \code{\link{binomial.all.test}}
+#' @examples
+#' 
+#' p <- c(0.00001, 0.024, 0.002, 0.045, 0.00003, 0.021, 0.0001, 0.0000948, 0.0000002)
+#' binomial.sns.test(p)
 
 binomial.sns.test <- function(p) {
 	# the test outlined in this paper: http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2256237
