@@ -77,9 +77,6 @@ binomial.all.test <- function(p) {
 
 
 binomial.bias.test <- function(p) {
-	# a one-tailed binomial test to specifically
-	# look for evidence of p-hacking or publication bias
-	# in the 0.03-0.05 bins
 
 	limits = c(0.03, 0.05)
 	midpoint <- 0.04
