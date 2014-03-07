@@ -54,11 +54,10 @@ fisher.lskew.test <- function(p) {
 # Basic idea
 fisher.bias.test <- function(p, limits=c(0.03,0.05)) {
     limits.check(limits)
-    p <- p.check(p, limits) # removes p's outside limits    
+    p <- p.check(p, limits) # removes p values outside limits    
     p.reversed <- 0.05 - p
     p.reversed <- p.check(p.reversed)
-
-    pp <- p * (1/(0.05 - limits[1])) # biggest p value gets pp 1
+    pp <- p.reversed * (1/(limits[2] - limits[1])) # biggest p value gets pp 1
     r <- fisher.method(matrix(pp, nrow=1))
     return(r)
 }
