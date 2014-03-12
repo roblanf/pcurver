@@ -25,3 +25,13 @@ test_that("fisher.lskew.test works", {
 	expect_that(fisher.lskew.test(p2)$p.value, equals(fisher.rskew.test(p2r)$p.value))
 
 })
+
+test_that("fisher.bias.test works", {
+
+	# should be larger p value because they're more bunched over a bigger range
+	p1 <- c(0.03, 0.04, 0.045, 0.0475, 0.0497, 0.05)
+	expect_that(fisher.bias.test(p1)$p.value, is_more_than(fisher.lskew.test(p1)$p.value))
+	expect_that(fisher.bias.test(p1)$df, equals(12))
+	expect_that(fisher.bias.test(p1, limits=c(0.046, 0.05))$df, equals(6))
+
+})

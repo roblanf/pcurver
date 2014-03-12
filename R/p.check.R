@@ -1,6 +1,3 @@
-# Function to check a list of p values
-# And trim them according to some limits
-
 p.check <- function(p, limits = c(0.0, 0.05)){
 	
 	error <- "Your vector of P values must only contain numbers  >=0.0 and <=0.05. Please check and try again"

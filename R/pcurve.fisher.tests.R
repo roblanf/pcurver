@@ -96,10 +96,11 @@ fisher.bias.test <- function(p, limits=c(0.03,0.05)) {
     p.reversed <- 0.05 - p
     pp <- p.reversed * (1/(limits[2] - limits[1])) # biggest p value gets pp 1
     r <- fisher.method(matrix(pp, nrow=1))
-    return(r)
+    return(process.madam(r))
 }
 
 process.madam <- function(r){
     d <- r[1:3]
     d$df <- d$num.p * 2
+    return(d)
 }
