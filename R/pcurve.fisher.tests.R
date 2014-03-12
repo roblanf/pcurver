@@ -1,3 +1,5 @@
+library(MADAM)
+
 #' Perform a test for right skew p values between 0.00 and 0.05.
 #'
 #' This function uses Fisher's test (implemented in fisher.method
@@ -38,7 +40,7 @@
 fisher.rskew.test <- function(p) {
 	pp <- p.to.pp(p)
 	r <- fisher.method(matrix(pp, nrow=1))
-	return(r)
+    return(process.madam(r))
 }
 
 
@@ -47,7 +49,7 @@ fisher.lskew.test <- function(p) {
     p.reversed <- 0.05 - p 
     pp <- p.to.pp(p.reversed)
     r <- fisher.method(matrix(pp, nrow=1))
-    return(r)
+    return(process.madam(r))
 }
 
 # NEEDS WRITING
@@ -60,4 +62,9 @@ fisher.bias.test <- function(p, limits=c(0.03,0.05)) {
     pp <- p.reversed * (1/(limits[2] - limits[1])) # biggest p value gets pp 1
     r <- fisher.method(matrix(pp, nrow=1))
     return(r)
+}
+
+process.madam <- function(r){
+    d <- r[1:3]
+    d$df <- d$num.p * 2
 }

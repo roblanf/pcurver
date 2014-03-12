@@ -8,4 +8,4 @@ Depends:
     R (>= 3.0.2)
 License: MIT
 Imports:
-    ggplot2
+    ggplot2, MADAM
