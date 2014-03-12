@@ -119,9 +119,6 @@ binomial.bias.test <- function(p) {
 #' binomial.sns.test(p)
 
 binomial.sns.test <- function(p) {
-	# the test outlined in this paper: http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2256237
-	# it's two one-sided binomial tests, which seems a bit odd
-	# I think it's better to use a single two-sided test
 
 	p <- p.check(p)
 	midpoint <- 0.025

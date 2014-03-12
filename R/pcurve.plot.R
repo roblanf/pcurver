@@ -1,3 +1,4 @@
+library(ggplot2)
 
 pcurve.plot <- function(p, binwidth = 0.01) {
 	
