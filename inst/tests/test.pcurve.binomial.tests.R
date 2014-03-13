@@ -14,7 +14,7 @@ test_that("binomial.sns.test works", {
 	# This is the counter example, just for completeness	
 	p2 <- c(0.05, 0.05, 0.05, 0.05, 0.05)
 	expect_that(test.function(p2)$'higher', equals(5.0))
-	expect_that(test.function(p2)$'lower', equals(0.0))
+	expect_that(test.function(p2)$'lower', 	equals(0.0))
 	expect_that(test.function(p2)$'p.rskew', equals(1.00000))
 	expect_that(test.function(p2)$'p.lskew', equals(0.03125))
 
@@ -56,9 +56,9 @@ test_that("binomial.bias.test works", {
 	test.function <- binomial.bias.test
 
 	p1 <- c(0.0, 0.0, 0.0, 0.0, 0.0)
-	expect_that(test.function(p1)$'lower', equals(0.0))
-	expect_that(test.function(p1)$'higher', equals(0.0))
-	expect_that(test.function(p1)$'p', equals(1.0))
+	expect_that(test.function(p1)$'lower', throws_error())
+	expect_that(test.function(p1)$'higher', throws_error())
+	expect_that(test.function(p1)$'p', throws_error())
 
 	p2 <- c(0.05, 0.05, 0.05, 0.05, 0.05)
 	expect_that(test.function(p2)$'lower', equals(0.0))

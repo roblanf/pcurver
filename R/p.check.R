@@ -12,6 +12,8 @@ p.check <- function(p, limits = c(0.0, 0.05)){
 	if(limits[1]>0.0) p <- p[p>=limits[1]]
 	if(limits[2]<0.05) p <- p[p<=limits[2]]
 
+	if(length(p)==0) stop("No p values fall in within the defined limits, cannot complete test")
+
 	return(p)
 	
 }
