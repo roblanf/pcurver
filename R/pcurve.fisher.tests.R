@@ -18,8 +18,6 @@ library(MADAM)
 #' Toolbox for Meta-Analysis. Source Code for Biology and Medicine 2010, 5:3
 
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
-#' @param ... additional expressions passed to fisher.method() function
-#'   from the MADAM package. 
 
 #' @return This method returns a data frame containing the following columns:
 #' 
@@ -62,8 +60,6 @@ fisher.rskew.test <- function(p) {
 #' Toolbox for Meta-Analysis. Source Code for Biology and Medicine 2010, 5:3
 
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
-#' @param ... additional expressions passed to fisher.method() function
-#'   from the MADAM package. 
 
 #' @return This method returns a data frame containing the following columns:
 #' 

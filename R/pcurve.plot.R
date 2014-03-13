@@ -1,5 +1,36 @@
 library(ggplot2)
 
+#' Draw a histogram of p values between 0.00 and 0.05.
+
+#' @param p a vector of p values between 0.0 and 0.05 (inclusive)
+#' @param binwidth the width of the histogram bins (default is 0.01)
+#' @param jitter logical TRUE/FALSE stating whether you want a plot of
+#' the raw data just underneath the histogram.
+
+#' @return This method returns a single ggplot2 plot object
+
+#' @keywords plot, p curve
+#' @export
+
+#' @examples
+#' 
+#' p <- c(0.00001, 0.024, 0.002, 0.045, 0.00003, 0.021, 0.0001, 0.0000948, 0.0000002)
+#' pcurve.plot(p)
+#' 
+#' # here are some p values you might get from a strong effect size
+#' p <- rexp(1000, 200)
+#' p <- p[p<0.05]
+#' 
+#' # let's add some you might get from p-hacking and/or publication bias
+#' h <- -1 * rexp(100, 200) + 0.05
+#' h <- h[h>0.00]
+#' p <- c(p, h)
+#' 
+#' pcurve.plot(p)
+#' pcurve.plot(p, binwidth = 0.005)
+#' pcurve.plot(p, binwidth = 0.005, jitter = FALSE)
+
+
 pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE) {
 
 	p <- p.check(p)
