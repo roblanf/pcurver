@@ -11,9 +11,15 @@
 #' of p values that contain evidential value. Significantly More p values in 
 #' the larger bin is consistent with intensive p hacking or publication
 #' bias.
+
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
-#' @return a list giving the number of p values in each bin, and the 
-#'   p value of the two-tailed sign test.
+
+#' @return This method returns a data frame containing the following columns:
+#' 
+#'   \item{lower }{The number of p values <0.025}
+#'   \item{higher }{The number of p values >0.025}
+#'   \item{p }{The p value from the two-talied sign test}
+
 #' @keywords binomial, p curve
 #' @export
 #' @seealso \code{\link{binomial.bias.test}}, \code{\link{binomial.sns.test}}
@@ -32,10 +38,9 @@ binomial.all.test <- function(p) {
 	lower <- sum(p<midpoint)
 
 	r <- binom.test(c(higher,lower))
+	d <- data.frame("lower"=lower, "higher"=higher, "p"=r$p.value)
 	
-	return(list("Number of p values >0.025"=higher,
-				"Number of p values <0.025"=lower,
-				"p value"=r$p.value))
+	return(d)
 }
 
 #' Perform a one-tailed sign test on p values between 0.03 and 0.05.
@@ -50,8 +55,13 @@ binomial.all.test <- function(p) {
 #' bias. This is a more sensitive test of p-hacking or publication bias
 #' than the related \code{\link{binomial.all.test}}
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
-#' @return a list giving the number of p values in each bin, and the 
-#'   p value of the two-tailed sign test.
+
+#' @return This method returns a data frame containing the following columns:
+#' 
+#'   \item{lower }{The number of p values in the 0.03-0.04 bin}
+#'   \item{higher }{The number of p values in the 0.04-0.05 bin}
+#'   \item{p }{The p value from the one-talied sign test}
+
 #' @keywords binomial, p curve
 #' @export
 #' @seealso \code{\link{binomial.all.test}}, \code{\link{binomial.sns.test}}
@@ -87,10 +97,9 @@ binomial.bias.test <- function(p) {
 	lower <- sum(p<midpoint)
 
 	r <- binom.test(c(higher,lower), alternative = "greater")
+	d <- data.frame("lower"=lower, "higher"=higher, "p"=r$p.value)
 	
-	return(list("Number of p values 0.03<p<0.04"=lower,
-				"Number of p values 0.04<p<0.05"=higher,
-				"One-tailed p value for evidence of publication bias and/or p-hacking"=r$p.value))
+	return(d)
 }
 
 #' Perform two one-tailed sign tests on p values between 0.00 and 0.05.
@@ -108,8 +117,15 @@ binomial.bias.test <- function(p) {
 #' Experimental Psychology: General, Forthcoming. 
 #' Available at SSRN: http://ssrn.com/abstract=2256237
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
-#' @return a list giving the number of p values in each bin, and the 
-#'   p values of the two one-tailed sign tests.
+
+#' @return This method returns a data frame containing the following columns:
+#' 
+#'   \item{lower }{The number of p values <0.025}
+#'   \item{higher }{The number of p values >0.025}
+#'   \item{p.rskew }{The p value from the one-talied sign test for right skew}
+#'   \item{p.lskew }{The p value from the one-talied sign test for left skew}
+
+
 #' @keywords binomial, p curve
 #' @export
 #' @seealso \code{\link{binomial.bias.test}}, \code{\link{binomial.all.test}}
@@ -128,9 +144,9 @@ binomial.sns.test <- function(p) {
 
 	r.skew <- binom.test(c(higher,lower), alternative = "less")
 	l.skew <- binom.test(c(higher,lower), alternative = "greater")
+	d <- data.frame("lower"=lower, "higher"=higher, 
+					"p.rskew"=r.skew$p.value,
+					"p.lskew"=l.skew$p.value)
 	
-	return(list("Number of p values >0.025"=higher,
-				"Number of p values <0.025"=lower,
-				"p value for right skew"=r.skew$p.value, 
-				"p value for left skew"=l.skew$p.value))
+	return(d)
 }
