@@ -155,7 +155,9 @@ fisher.bias.test <- function(p, lower.limit=0.03) {
 }
 
 process.madam <- function(r){
-    d <- r[1:3]
+    d <- r[1]
+    d$p <- r$p.value
+    d$num.p <- r$num.p
     d$df <- d$num.p * 2
     return(d)
 }
