@@ -95,7 +95,7 @@ fisher.lskew.test <- function(p) {
 #' closer to 0.05, so the closer lower.limit is to 0.05, the bigger the
 #' effect size. But we lose power as we throw out data by raising lower.limit.
 #' Thus, the default lower.limit is 0.03, but if you have a lot of data
-#' you might consider increasing it. This test is inspired by those in
+#' you might consider increasing it. This test builds on those described
 #' in Simonsohn et al (2013).
 
 #' @references Simonsohn, Uri and Nelson, Leif D. and Simmons, Joseph 
