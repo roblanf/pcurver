@@ -1,55 +1,52 @@
-p.mean <- function(p){
-	p <- p.check(p)
+bootstrap.result <- function(observed.diff, boot.diffs){
 
-	mean.p = median(p)
+    # calculate quantiles and p value for bootstrap replicates
+    # p.value asks if observed diff differs from zero
 
-	return(mean.p)
-}
+    quantiles = quantile(boot.diffs, c(0.025, 0.975))    
 
-mean.bias.test <- function(p, lower.limit = 0.03, reps = 1000){
+    p.value = (length(which(boot.diffs<0)))/(reps+1)
 
-    limits <- c(lower.limit, 0.05)
-    limits.check(limits)
-    p <- p.check(p, limits) # removes p values outside limits    
-	n <- length(p)
+    # if we're at the extremes we can't make exact statements
+    if(p.value == 0){ p.value = paste("<", 1/(reps+1))}
+    if(p.value == 1){ p.value = paste(">", reps/(reps+1))}
 
-  	observed.mean <- p.mean(p)
- 
-	# Now find distribution of the expected skew, giving sampling error with n samples
-	rand <- matrix(runif(reps*n, min = lower.limit, max = 0.05), ncol = n, nrow = reps)
-	boot.mean <- apply(rand, 1, p.mean)
-	upper.CI <- quantile(boot.mean, probs = c(0.95))[[1]]
- 
-    # One-tailed p value
-  	p.value <- (1 + length(boot.mean[boot.mean > observed.mean])) / reps
+    return(list(observed.diff = observed.diff, 
+                confidence.intervals = quantiles, 
+                p.value = p.value))
 
-  	d <- data.frame(mean = observed.mean, p.num = length(p), p = p.value, upper.CI = upper.CI)
-	pl <- ggplot(as.data.frame(boot.mean), aes(x=boot.mean)) + 
-		geom_histogram(colour="dark grey") + 
-		geom_vline(x=observed.mean, linetype = 'dashed', colour="dark grey") + 
-		geom_vline(x = upper.CI, linetype='dashed')
-  	plot(pl)
-  	return(d)
+
 }
 
 
-skew.compare.test <- function(p1, p2, reps = 1000){
+bootstrap.skew.test <- function(p1, p2, reps=999){
+    # bootstrap test to ask whether observed diff is bigger than expected by chance
+    # i.e. is the skewness of the two distributions the same or different
 
-	p1 <- p.check(p1)
-	p2 <- p.check(p2)
+    observed.diff = skewness(p1) - skewness(p2)
 
-	n1 <- length(p1)
-	n2 <- length(p2)
-  
-  
-  	rand1 <- matrix(sample(p1,n1*reps,replace=T), ncol = n1, nrow = reps)
-  	rand2 <- matrix(sample(p2,n2*reps,replace=T), ncol = n2, nrow = reps)
-  
-  	boot.skew1 <- apply(rand1, 1, p.skew)
-  	boot.skew2 <- apply(rand2, 1, p.skew)
-  
-  	boot.diffs <- boot.skew1 - boot.skew2           # Find the difference. It should be zero on average if they have the same skew
-  	quantiles <- quantile(boot.diffs, probs = c(0.025, 0.975))   # 95% CIs on the difference. Should not overlap zero if there is a difference
-  
-  	return(boot.diffs)
+    p1.reps = replicate(reps, skewness(sample(p1, replace = TRUE))) 
+    p2.reps = replicate(reps, skewness(sample(p2, replace = TRUE))) 
+    boot.diffs = p1.reps - p2.reps
+    boot.diffs = sort(boot.diffs)
+
+    result = bootstrap.result(observed.diff, boot.diffs)
+    return(result)
 }
+
+
+bootstrap.mean.test <- function(p1, p2, reps=999){
+    # bootstrap test to ask whether observed diff is bigger than expected by chance
+    # i.e. is the skewness of the two distributions the same or different
+
+    observed.diff = mean(p1) - mean(p2)
+
+    p1.reps = replicate(reps, mean(sample(p1, replace = TRUE))) 
+    p2.reps = replicate(reps, mean(sample(p2, replace = TRUE))) 
+    boot.diffs = p1.reps - p2.reps
+    boot.diffs = sort(boot.diffs)
+
+    result = bootstrap.result(observed.diff, boot.diffs)
+    return(result)
+}
+
