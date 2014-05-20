@@ -9,3 +9,4 @@ Depends:
 License: MIT
 Imports:
     ggplot2, MADAM
+Suggests: testthat
