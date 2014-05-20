@@ -52,7 +52,7 @@ pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE) {
 
 	if(jitter==TRUE){
 		pl <- 	pl + 
-			geom_histogram(binwidth=binwidth, colour="dark grey") + 
+			geom_histogram(binwidth=binwidth, colour="dark grey", right=FALSE) + 
 			geom_jitter(aes(y=y), alpha = 0.25, position = position_jitter(height = j)) +
 			xlim(c(0.0, 0.05))
 	} else{
