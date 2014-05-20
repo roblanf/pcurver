@@ -66,12 +66,6 @@ pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE) {
 }
 
 
-skew.plot <- function(observed.skew, boot.skew, CIs){
-
-
-
-}
-
 
 
 
