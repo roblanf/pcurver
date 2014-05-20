@@ -49,9 +49,8 @@ binomial.all.test <- function(p) {
 #' many p values in the 0.03 - 0.04 bin as in the 0.04 - 0.05 bin.
 #' Note that p values of exactly 0.04 are excluded, because they 
 #' do not fall in either bin. The test uses a one-tailed sign test.
-#' Significantly more p values in the smaller bin is consistent with
-#' collections of p values with evidential value. Significantly more p  
-#' values in the larger bin is consistent with p-hacking or publication 
+#' Rejecting the null hypothesis is (i.e. finding significantly more p  
+#' values in the larger bin) is consistent with p-hacking or publication 
 #' bias. This is a more sensitive test of p-hacking or publication bias
 #' than the related \code{\link{binomial.all.test}}
 #' @param p a vector of p values between 0.0 and 0.05 (inclusive)
