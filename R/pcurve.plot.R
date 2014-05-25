@@ -31,7 +31,7 @@ library(ggplot2)
 #' pcurve.plot(p, binwidth = 0.005, jitter = FALSE)
 
 
-pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE) {
+pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE, alpha = 0.25) {
 
 	p <- p.check(p)
 
@@ -53,7 +53,7 @@ pcurve.plot <- function(p, binwidth = 0.01, jitter = TRUE) {
 	if(jitter==TRUE){
 		pl <- 	pl + 
 			geom_histogram(binwidth=binwidth, colour="dark grey", right=FALSE) + 
-			geom_jitter(aes(y=y), alpha = 0.25, position = position_jitter(height = j)) +
+			geom_jitter(aes(y=y), alpha = alpha, position = position_jitter(height = j)) +
 			xlim(c(0.0, 0.05))
 	} else{
 		pl <- 	pl + 
