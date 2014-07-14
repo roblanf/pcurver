@@ -43,22 +43,27 @@ binomial.all.test <- function(p) {
 	return(d)
 }
 
-#' Perform a one-tailed sign test on p values between 0.03 and 0.05.
+#' Perform a one-tailed sign test to test for bias in p value distributions.
 #'
 #' This function tests the null hypothesis that there are at least as
-#' many p values in the 0.03 - 0.04 bin as in the 0.04 - 0.05 bin.
-#' Bins are defined as 0.03<=p<0.04, 0.04<=p<0.05, and the number of p 
-#' values in each bin is compared with a one-tailed sign test.
+#' many p values in the lower bin as in the higher bin. It performs one of 
+#' two tests, defined by the 'lower.limit' argument, see below.
 #' Rejecting the null hypothesis is (i.e. finding significantly more p  
-#' values in the larger bin) is consistent with p-hacking or publication 
-#' bias. This is a more sensitive test of p-hacking or publication bias
+#' values in the higher bin) is consistent with p-hacking or publication 
+#' bias. These are much more sensitive tests of p-hacking or publication bias
 #' than the related \code{\link{binomial.all.test}}. 
+
 #' @param p a vector of p values where 0.0<=p<0.05
+#' @param lower.limit the lower limit (either 0.03 or 0.04) to use in the test.
+#' If lower.limit is set to 0.03, then the two bins of p values are defined as 
+#' lower: 0.03<=p<0.04, and higher: 0.04<=p<0.05. 
+#' If lower.limit is set to 0.04, then the two bins of p values are defined as 
+#' lower: 0.04<p<0.045, and higher: 0.045<p<0.05. 
 
 #' @return This method returns a data frame containing the following columns:
 #' 
-#'   \item{lower }{The number of p values in the 0.03<=p<0.04 bin}
-#'   \item{higher }{The number of p values in the 0.04<=p<0.05 bin}
+#'   \item{lower }{The number of p values in the lower bin}
+#'   \item{higher }{The number of p values in the higher bin}
 #'   \item{p }{The p value from the one-talied sign test}
 
 #' @keywords binomial, p curve
@@ -85,15 +90,25 @@ binomial.all.test <- function(p) {
 #' binomial.bias.test(p)
 
 
-binomial.bias.test <- function(p) {
+binomial.bias.test <- function(p, lower.limit=0.03) {
 
-	limits = c(0.03, 0.05)
-	midpoint <- 0.04
-	limits.check(limits)
-	p <- p.check(p, limits)
-
-	lower <- length(which(p<midpoint & p>=limits[1]))
-	higher <- length(which(p<limits[2] & p>=midpoint))
+	if(lower.limit==0.03){
+		limits = c(0.03, 0.05)
+		midpoint <- 0.04
+		limits.check(limits)
+		p <- p.check(p, limits)
+		lower <- length(which(p<midpoint & p>=limits[1]))
+		higher <- length(which(p<limits[2] & p>=midpoint))
+	} else if(lower.limit==0.04){
+		limits = c(0.04, 0.05)
+		midpoint <- 0.045
+		limits.check(limits)
+		p <- p.check(p, limits)		
+		lower <- length(which(p<midpoint & p>limits[1]))
+		higher <- length(which(p<limits[2] & p>midpoint))
+	} else{
+		stop("lower.limit must be set to either 0.03 or 0.04")
+	}
 
 	r <- binom.test(c(higher,lower), alternative = "greater")
 	d <- data.frame("lower"=lower, "higher"=higher, "p"=r$p.value)
